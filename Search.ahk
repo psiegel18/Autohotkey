@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-^+l:: {
+^!l:: {
     Send "^c"
     Run "chrome.exe"
     WinWaitActive "ahk_class Chrome_WidgetWin_1"

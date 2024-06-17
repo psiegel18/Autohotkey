@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-^+l:: {
+^!l:: {
     Send "^c" ; Copy the highlighted text
     if WinExist("ahk_class Chrome_WidgetWin_1") {
         ; If Chrome is running, activate the window and open a new tab
