@@ -6,6 +6,10 @@ Loop Files, "C:\Users\prest\Github\Autohotkey\*.*"  ; Change this folder and wil
     LB.Add([A_LoopFilePath])
 MyGui.Add("Button", "Default", "OK").OnEvent("Click", LaunchFile)
 ^+Space:: MyGui.Show() ;ctl+shft+space to run the GUI
+^!Space:: {            ;ctl+alt+space to close the GUI
+    MyGui.Destroy() 
+    Reload
+}
 
 LaunchFile(*)
 {
