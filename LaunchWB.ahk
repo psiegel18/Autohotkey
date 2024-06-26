@@ -1,3 +1,4 @@
 #Requires AutoHotkey v2.0
 
-+F2:: Run "WebBrowser.ahk"
+; shft+F1
++F1:: Run "WebWindows\myWiki.ahk"
