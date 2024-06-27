@@ -33,6 +33,8 @@
     MyGui.Add("Text", , "Startup:")
     MyGui.Add("Text", , "ctrl+alt+W = Open WikiShortcut.ahk")
     MyGui.Add("Text", , "ctrl+alt+shft+W = Close WikiShortcut.ahk")
+    MyGui.Add("Text", , "ctrl+alt+N = Open Text Editor")
+    MyGui.Add("Text", , "ctrl+alt+. = Open AHKFolder")
 
     ; Show the GUI
     MyGui.Show()
