@@ -41,8 +41,8 @@ global categories := [
         {hotkey: "Ctrl+Alt+Shift+W", description: "Close WikiShortcut.ahk"},
         {hotkey: "Ctrl+Alt+N", description: "Open Text Editor"},
         {hotkey: "Ctrl+Alt+.", description: "Open AHKFolder"},
-        {hotkey: "Ctrl+Alt+Z", description: "Open Primary NCH Server"},
-        {hotkey: "Ctrl+Alt+Shift+Z", description: "Open Secondary NCH Server"}
+        {hotkey: "Win+Shft+Z", description: "Open Primary NCH Server"},
+        {hotkey: "Win+Alt+Shift+Z", description: "Open Secondary NCH Server"}
     ]}
 ]
 
