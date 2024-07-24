@@ -39,6 +39,7 @@ global categories := [
     {name: "Startup", hotkeys: [
         {hotkey: "Ctrl+Alt+W", description: "Open WikiShortcut.ahk"},
         {hotkey: "Ctrl+Alt+Shift+W", description: "Close WikiShortcut.ahk"},
+        {hotkey: "Win+Alt+Shift+C", description: "Charging Training.pptx"},
         {hotkey: "Ctrl+Alt+N", description: "Open Text Editor"},
         {hotkey: "Ctrl+Alt+.", description: "Open AHKFolder"},
         {hotkey: "Win+Shft+Z", description: "Open Primary NCH Server"},
