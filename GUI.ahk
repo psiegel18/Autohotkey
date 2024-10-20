@@ -25,15 +25,13 @@ global categories := [
     {name: "Thunder Passwords", hotkeys: [
         {hotkey: "Ctrl+Alt+C", description: "AMHS Hyperspace/FTP login"},
         {hotkey: "Ctrl+Alt+V", description: "AMHS Text login"},
-        {hotkey: "Ctrl+Alt+Z", description: "NCH Remote Desktop login"},
-        {hotkey: "Ctrl+Alt+A", description: "NCH Hyperspace login"},
-        {hotkey: "Ctrl+Alt+Q", description: "NCH Text login"}
+        {hotkey: "Ctrl+Alt+P", description: "Epic Password"},
+        {hotkey: "Ctrl+Alt+A", description: "NEMS Hyperspace login"},
+        {hotkey: "Ctrl+Alt+Q", description: "NEMS Text login"}
     ]},
-    {name: "Other Passwords", hotkeys: [
-        {hotkey: "Ctrl+Alt+T", description: "Thunder password"},
+    {name: "Emails", hotkeys: [
+        {hotkey: "Ctrl+Alt+T", description: "Thunder"},
         {hotkey: "Ctrl+Alt+U", description: "Epic email"},
-        {hotkey: "Ctrl+Alt+P", description: "Epic password"},
-        {hotkey: "Ctrl+Alt+Shift+P", description: "Epic email + password"},
         {hotkey: "Ctrl+Alt+Shift+N", description: "NCH email"}
     ]},
     {name: "Startup", hotkeys: [
