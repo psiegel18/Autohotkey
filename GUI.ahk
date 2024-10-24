@@ -19,8 +19,20 @@ global categories := [
         {hotkey: "Ctrl+Shift+G", description: "Guru Search"}
     ]},
     {name: "CustFilePath", hotkeys: [
-        {hotkey: ".prd", description: "AMHS prd file path"},
-        {hotkey: ".nonprd", description: "AMHS non-prd file path"}
+        {hotkey: ".prd", description: "prd file path"},
+        {hotkey: ".nprd", description: "non-prd file path"}
+    ]},
+    {name: "Hotkeys", hotkeys: [
+        {hotkey: "Ctrl+Alt+T", description: "Thunder"},
+        {hotkey: "Ctrl+Alt+U", description: "Epic email"},
+        {hotkey: "Ctrl+Alt+Shift+N", description: "NCH email"},
+        {hotkey: "Ctrl+Alt+W", description: "Open WikiShortcut.ahk"},
+        {hotkey: "Ctrl+Alt+Shift+W", description: "Close WikiShortcut.ahk"},
+        {hotkey: "Win+Alt+Shift+C", description: "Charging Training.pptx"},
+        {hotkey: "Ctrl+Alt+N", description: "Open Text Editor"},
+        {hotkey: "Ctrl+Alt+.", description: "Open AHKFolder"},
+        {hotkey: "Win+Shft+Z", description: "Open Primary NCH Server"},
+        {hotkey: "Win+Alt+Shift+Z", description: "Open Secondary NCH Server"}
     ]},
     {name: "Thunder Passwords", hotkeys: [
         {hotkey: "Ctrl+Alt+C", description: "AMHS Hyperspace/FTP login"},
@@ -29,20 +41,6 @@ global categories := [
         {hotkey: "Ctrl+Alt+A", description: "NEMS Hyperspace login"},
         {hotkey: "Ctrl+Alt+Q", description: "NEMS Text login"}
     ]},
-    {name: "Emails", hotkeys: [
-        {hotkey: "Ctrl+Alt+T", description: "Thunder"},
-        {hotkey: "Ctrl+Alt+U", description: "Epic email"},
-        {hotkey: "Ctrl+Alt+Shift+N", description: "NCH email"}
-    ]},
-    {name: "Startup", hotkeys: [
-        {hotkey: "Ctrl+Alt+W", description: "Open WikiShortcut.ahk"},
-        {hotkey: "Ctrl+Alt+Shift+W", description: "Close WikiShortcut.ahk"},
-        {hotkey: "Win+Alt+Shift+C", description: "Charging Training.pptx"},
-        {hotkey: "Ctrl+Alt+N", description: "Open Text Editor"},
-        {hotkey: "Ctrl+Alt+.", description: "Open AHKFolder"},
-        {hotkey: "Win+Shft+Z", description: "Open Primary NCH Server"},
-        {hotkey: "Win+Alt+Shift+Z", description: "Open Secondary NCH Server"}
-    ]}
 ]
 
 ShowHotkeyGUI() {
