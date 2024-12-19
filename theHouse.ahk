@@ -32,7 +32,7 @@ theHouse() {
     Run "https://vercel.com/the-house/user_database/deployments"
     Run "https://cloud.mongodb.com/v2/668caa771b77a8026cbe8ac1#/overview"
     Run "C:\Users\prest\OneDrive\Desktop\Claude.lnk"
-    Run "https://outlook.office.com/mail/"
+    Run "C:\Users\prest\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\MongoDB Inc\MongoDBCompass.lnk"
 }
 
 vsCode() {
