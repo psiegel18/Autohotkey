@@ -19,32 +19,29 @@ global categories := [
         {hotkey: "Ctrl+Shift+G", description: "Guru Search"}
     ]},
     {name: "CustFilePath", hotkeys: [
-        {hotkey: ".prd", description: "AMHS prd file path"},
-        {hotkey: ".nonprd", description: "AMHS non-prd file path"}
+        {hotkey: ".prd", description: "prd file path"},
+        {hotkey: ".nprd", description: "non-prd file path"}
     ]},
-    {name: "Thunder Passwords", hotkeys: [
-        {hotkey: "Ctrl+Alt+C", description: "AMHS Hyperspace/FTP login"},
-        {hotkey: "Ctrl+Alt+V", description: "AMHS Text login"},
-        {hotkey: "Ctrl+Alt+Z", description: "NCH Remote Desktop login"},
-        {hotkey: "Ctrl+Alt+A", description: "NCH Hyperspace login"},
-        {hotkey: "Ctrl+Alt+Q", description: "NCH Text login"}
-    ]},
-    {name: "Other Passwords", hotkeys: [
-        {hotkey: "Ctrl+Alt+T", description: "Thunder password"},
+    {name: "Hotkeys", hotkeys: [
+        {hotkey: "Ctrl+Alt+T", description: "Thunder"},
         {hotkey: "Ctrl+Alt+U", description: "Epic email"},
-        {hotkey: "Ctrl+Alt+P", description: "Epic password"},
-        {hotkey: "Ctrl+Alt+Shift+P", description: "Epic email + password"},
-        {hotkey: "Ctrl+Alt+Shift+N", description: "NCH email"}
-    ]},
-    {name: "Startup", hotkeys: [
+        {hotkey: "Ctrl+Alt+Shift+N", description: "NCH email"},
         {hotkey: "Ctrl+Alt+W", description: "Open WikiShortcut.ahk"},
         {hotkey: "Ctrl+Alt+Shift+W", description: "Close WikiShortcut.ahk"},
         {hotkey: "Win+Alt+Shift+C", description: "Charging Training.pptx"},
+        {hotkey: "Win+Alt+Shift+M", description: "MedBuild Strategy Kickoff.pptx"},
         {hotkey: "Ctrl+Alt+N", description: "Open Text Editor"},
         {hotkey: "Ctrl+Alt+.", description: "Open AHKFolder"},
         {hotkey: "Win+Shft+Z", description: "Open Primary NCH Server"},
         {hotkey: "Win+Alt+Shift+Z", description: "Open Secondary NCH Server"}
-    ]}
+    ]},
+    {name: "Thunder Passwords", hotkeys: [
+        {hotkey: "Ctrl+Alt+C", description: "AMHS Hyperspace/FTP login"},
+        {hotkey: "Ctrl+Alt+V", description: "AMHS Text login"},
+        {hotkey: "Ctrl+Alt+P", description: "Epic Password"},
+        {hotkey: "Ctrl+Alt+A", description: "NEMS Hyperspace login"},
+        {hotkey: "Ctrl+Alt+Q", description: "NEMS Text login"}
+    ]},
 ]
 
 ShowHotkeyGUI() {
