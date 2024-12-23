@@ -1,3 +1,5 @@
+;When making a copy of this script update the file path for "this.credentialsFile" on line 18 in the "_New()" function with your credentials.txt file. Also update the icon file at the bottom with your local file.
+
 #Requires AutoHotkey v2.0
 #Warn All
 #SingleInstance Force
@@ -13,7 +15,7 @@ class CredentialManager {
     mainGui := ""
 
     __New() {
-        this.credentialsFile := "credentials.txt"
+        this.credentialsFile := "C:\Users\psiegel\OneDrive - Epic\Documents\AutoHotkey\Autohotkey\credentials.txt"
         this.LoadCredentials()
         this.CreateMainGui()
     }
@@ -35,10 +37,12 @@ class CredentialManager {
                     if (parts.Length >= 3)
                         this.credentials[parts[1]] := { username: parts[2], password: parts[3] }
                 }
+                
+                ; Debug - add this temporarily
+                MsgBox("Loaded " this.credentials.Count " credentials")
             }
         }
     }
-
     SaveCredentials() {
         try {
             ; Build file content
@@ -292,5 +296,5 @@ ToggleLoginManager(*) {
 }
 
 ; Set icon and hotkey
-TraySetIcon("LoginIcon.ico")
+TraySetIcon("C:\Users\psiegel\OneDrive - Epic\Documents\AutoHotkey\Autohotkey\LoginIcon.ico")
 Hotkey "^!/", ToggleLoginManager  ; Ctrl+Alt+/
