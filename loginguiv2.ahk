@@ -244,37 +244,45 @@ class CredentialManager {
     HandleRoleClick(role, *) {
         if !this.credentials.Has(role)
             return
-
+    
         MsgBox("Click OK and then click in the username field.", "Ready to Input", "T3")
-
+    
         ; Wait for left click
         KeyWait "LButton"
         KeyWait "LButton", "D"
-        Sleep 100
-
-        ; Send credentials
-        cred := this.credentials[role]
-
+        Sleep 200  ; Increased initial delay
+    
+        ; Store the original clipboard content
+        oldClip := A_Clipboard
+        A_Clipboard := ""  ; Clear clipboard first
+    
         ; Send username
+        cred := this.credentials[role]
         A_Clipboard := cred.username
+        ClipWait(2)  ; Wait up to 2 seconds for the clipboard to contain data
         Send "^v"
-        Sleep 100
-
+        Sleep 150  ; Increased delay after username paste
+    
         ; Send tab and wait
         Send "{Tab}"
-        Sleep 100
-
-        ; Clear clipboard and set password
-        A_Clipboard := ""
-        Sleep 50
+        Sleep 150  ; Increased delay after tab
+    
+        ; Set password
+        A_Clipboard := ""  ; Clear clipboard again
+        Sleep 100  ; Added delay before setting new clipboard content
         A_Clipboard := cred.password
-
-        ; Send password
+        ClipWait(2)  ; Wait up to 2 seconds for the clipboard to contain data
         Send "^v"
-        Sleep 100
-
-        ; Clear clipboard for security
+        Sleep 150  ; Increased delay after password paste
+        
+        ; Send return key
+        Send "{Enter}"
+        Sleep 150  ; Delay after return key
+    
+        ; Clear clipboard and restore original content
         A_Clipboard := ""
+        Sleep 100
+        A_Clipboard := oldClip
     }
 
     ShowGui() {
