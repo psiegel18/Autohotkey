@@ -8,6 +8,6 @@ wv := WebView2.create(browser.Hwnd)
 wv.CoreWebView2.Navigate("https://wiki/main/User:Psiegel")
 return
 
-;shft+F2 will open the popup window (see LaunchWB.ahk)
-;ctl+shft+F2 will close the popup window
+;Shft+F1 will open the popup window (see LaunchWB.ahk)
+;Shft+F2 will close the popup window
 +F2:: ExitApp
