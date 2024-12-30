@@ -15,7 +15,7 @@ class CredentialManager {
     mainGui := ""
 
     __New() {
-        this.credentialsFile := "C:\Users\psiegel\OneDrive - Epic\Documents\AutoHotkey\Autohotkey\credentials.txt"
+        this.credentialsFile := A_ScriptDir "\credentials.txt"
         this.LoadCredentials()
         this.CreateMainGui()
     }
@@ -304,5 +304,5 @@ ToggleLoginManager(*) {
 }
 
 ; Set icon and hotkey
-TraySetIcon("C:\Users\psiegel\OneDrive - Epic\Documents\AutoHotkey\Autohotkey\LoginIcon.ico")
+TraySetIcon(A_ScriptDir "\LoginIcon.ico")
 Hotkey "^!/", ToggleLoginManager  ; Ctrl+Alt+/
