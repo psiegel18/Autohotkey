@@ -1,5 +1,3 @@
-;When making a copy of this script update the file path for "this.credentialsFile" on line 18 in the "_New()" function with your credentials.txt file. Also update the icon file at the bottom with your local file.
-
 #Requires AutoHotkey v2.0
 #Warn All
 #SingleInstance Force
