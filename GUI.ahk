@@ -3,6 +3,7 @@
 ; Define Globals
 global categories
 global LV
+global MyGui
 
 ; Define the hotkey for displaying the GUI
 ^!Space:: ShowHotkeyGUI()
@@ -16,37 +17,41 @@ global categories := [
     ]},
     {name: "Search", hotkeys: [
         {hotkey: "Ctrl+Alt+Win+G", description: "Google Search"},
-        {hotkey: "Ctrl+Shift+G", description: "Guru Search"}
+        {hotkey: "Ctrl+Alt+G", description: "Guru Search"}
     ]},
-    {name: "CustFilePath", hotkeys: [
+    {name: "Hotkeys", hotkeys: [
+        {hotkey: "Ctrl+End", description: "Home Key"},
+        {hotkey: "Ctrl+Del", description: "Insert Key"},
+        {hotkey: "Ctrl+Alt+W", description: "Open WikiShortcut.ahk"},
+        {hotkey: "Ctrl+Alt+Shift+W", description: "Close WikiShortcut.ahk"},
+        {hotkey: "Win+Alt+Ctrl+C", description: "Charging Training.pptx"},       
+        {hotkey: "Win+Alt+Shift+I", description: "Open Microsoft Co-Pilot"},
         {hotkey: ".prd", description: "prd file path"},
         {hotkey: ".nprd", description: "non-prd file path"}
     ]},
-    {name: "Hotkeys", hotkeys: [
+    {name: "Credentials", hotkeys: [
+        {hotkey: "Ctrl+Alt+/", description: "Epic Login Gui"},
         {hotkey: "Ctrl+Alt+T", description: "Thunder"},
         {hotkey: "Ctrl+Alt+U", description: "Epic email"},
-        {hotkey: "Ctrl+Alt+Shift+N", description: "NCH email"},
-        {hotkey: "Ctrl+Alt+W", description: "Open WikiShortcut.ahk"},
-        {hotkey: "Ctrl+Alt+Shift+W", description: "Close WikiShortcut.ahk"},
-        {hotkey: "Win+Alt+Shift+C", description: "Charging Training.pptx"},
-        {hotkey: "Win+Alt+Shift+M", description: "MedBuild Strategy Kickoff.pptx"},
-        {hotkey: "Ctrl+Alt+N", description: "Open Text Editor"},
-        {hotkey: "Ctrl+Alt+.", description: "Open AHKFolder"},
-        {hotkey: "Win+Shft+Z", description: "Open Primary NCH Server"},
-        {hotkey: "Win+Alt+Shift+Z", description: "Open Secondary NCH Server"}
-    ]},
-    {name: "Thunder Passwords", hotkeys: [
-        {hotkey: "Ctrl+Alt+C", description: "AMHS Hyperspace/FTP login"},
-        {hotkey: "Ctrl+Alt+V", description: "AMHS Text login"},
         {hotkey: "Ctrl+Alt+P", description: "Epic Password"},
+        {hotkey: "Ctrl+Alt+C", description: "AMHS Hyperspace login"},
+        {hotkey: "Ctrl+Alt+V", description: "AMHS Text login"},
         {hotkey: "Ctrl+Alt+A", description: "NEMS Hyperspace login"},
-        {hotkey: "Ctrl+Alt+Q", description: "NEMS Text login"}
+        {hotkey: "Ctrl+Alt+Q", description: "NEMS Text login"},
+        {hotkey: "Ctrl+Alt+Shift+U", description: "UMC Hyperspace login"},
+        {hotkey: "Ctrl+Alt+Shift+T", description: "UMC Text login"}
     ]},
+    {name: "Functions", hotkeys: [
+        {hotkey: "Ctrl+Alt+Shift+M", description: "Convert .xml to .xlsx"},
+        {hotkey: "Ctrl+Alt+.", description: "Open AHKFolder"},
+        {hotkey: "Ctrl+Alt+S", description: "Paste List w Enter"},
+        {hotkey: "Ctrl+Alt+Shift+S", description: "Paste List w Down"}
+    ]}
 ]
 
 ShowHotkeyGUI() {
     ; Create a new GUI
-    MyGui := Gui("+Resize +MinSize400x300", "Hotkey Reference")
+    global MyGui := Gui("+Resize +MinSize400x300", "Hotkey Reference")
 
     ; Add a search box with placeholder text
     searchBox := MyGui.Add("Edit", "vSearchTerm w590", "Search...")
@@ -135,23 +140,23 @@ FilterList(LV, searchBox) {
         return
     }
 
-    LV.Opt("-Redraw")  ; Pause redrawing
-    LV.Delete()  ; Clear all rows
+    LV.Opt("-Redraw")
+    LV.Delete()
 
     searchTermLower := StrLower(searchTerm)
 
     for category in categories {
         categoryMatched := InStr(StrLower(category.name), searchTermLower) > 0
-        for hotkey in category.hotkeys {
+        for currentHotkey in category.hotkeys {
             if (categoryMatched or 
-                InStr(StrLower(hotkey.hotkey), searchTermLower) > 0 or 
-                InStr(StrLower(hotkey.description), searchTermLower) > 0) {
-                LV.Add(, category.name, hotkey.hotkey, hotkey.description)
+                InStr(StrLower(currentHotkey.hotkey), searchTermLower) > 0 or 
+                InStr(StrLower(currentHotkey.description), searchTermLower) > 0) {
+                LV.Add(, category.name, currentHotkey.hotkey, currentHotkey.description)
             }
         }
     }
 
-    LV.Opt("+Redraw")  ; Resume redrawing
+    LV.Opt("+Redraw")
     AutoSizeColumns(LV)
 }
 
@@ -159,8 +164,8 @@ PopulateListView(LV) {
     LV.Opt("-Redraw")  ; Pause redrawing
     LV.Delete()  ; Clear all rows
     for category in categories {
-        for hotkey in category.hotkeys {
-            LV.Add(, category.name, hotkey.hotkey, hotkey.description)
+        for currentHotkey in category.hotkeys {
+            LV.Add(, category.name, currentHotkey.hotkey, currentHotkey.description)
         }
     }
     LV.Opt("+Redraw")  ; Resume redrawing
