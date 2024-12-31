@@ -26,9 +26,11 @@ CloseProcessWindow() {
 ; Hotkey: Ctrl+Alt+Shift+M
 ^!+m:: {
     ; Ask user if they want to convert a single file or multiple files
-    result := MsgBox("Would you like to convert multiple files from a folder?`n`nYes = Select Folder`nNo = Select Single File", "XML to XLSX Converter", "YesNo Icon?")
+    result := MsgBox("Would you like to convert multiple files from a folder?`n`nYes = Select a folder`nNo = Select single file`nSelect 'Cancel' to exit", "XML to XLSX Converter", "YesNoCancel Icon?")
     
-    if (result = "Yes") {
+    if (result = "Cancel") {
+        return
+    } else if (result = "Yes") {  ; User chose Multiple
         ; Select folder containing XML files
         folderPath := DirSelect("", 0, "Select folder containing XML files")
         if (!folderPath)
@@ -91,6 +93,10 @@ CloseProcessWindow() {
         MyGui.Add("Button", "x+10 yp w100 vUnselectAllBtn", "Unselect All")
             .OnEvent("Click", (*) => ToggleAll(false))
         
+        ; Add Cancel button (before Convert button)
+        MyGui.Add("Button", "x+10 yp w100 vCancelBtn", "Cancel")
+            .OnEvent("Click", (*) => MyGui.Destroy())
+        
         ; Add Convert button (right-aligned)
         MyGui.Add("Button", "x640 yp w100 Default vConvertBtn", "Convert")
             .OnEvent("Click", ConvertSelected)
@@ -118,6 +124,7 @@ CloseProcessWindow() {
             ; Adjust button positions
             thisGui["SelectAllBtn"].Move(20, buttonPanelY + 20)
             thisGui["UnselectAllBtn"].Move(130, buttonPanelY + 20)
+            thisGui["CancelBtn"].Move(240, buttonPanelY + 20)
             thisGui["ConvertBtn"].Move(Width - 120, buttonPanelY + 20)
             
             ; Ensure column fills the available width
@@ -167,7 +174,7 @@ CloseProcessWindow() {
             MsgBox("Conversion complete!", "Success", "Icon!")
             MyGui.Destroy()
         }
-    } else {
+    } else {  ; User chose Single
         ; Select single XML file
         filePath := FileSelect(1, "", "Select XML file", "XML files (*.xml)")
         if (!filePath)
