@@ -17,7 +17,8 @@ global categories := [
     ]},
     {name: "Search", hotkeys: [
         {hotkey: "Ctrl+Alt+Win+G", description: "Google Search"},
-        {hotkey: "Ctrl+Alt+G", description: "Guru Search"}
+        {hotkey: "Ctrl+Alt+G", description: "Guru Search"},
+        {hotkey: "Ctrl+Alt+F", description: "INI/Item Search"}
     ]},
     {name: "Hotkeys", hotkeys: [
         {hotkey: "Ctrl+End", description: "Home Key"},
