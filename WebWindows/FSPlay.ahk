@@ -5,9 +5,9 @@
 browser := Gui()
 browser.Show("w1200 h975")
 wv := WebView2.create(browser.Hwnd)
-wv.CoreWebView2.Navigate("https://wiki/main/User:Psiegel")
+wv.CoreWebView2.Navigate("https://hsw-iis-fs.epic.com/FSPLAYFIN/")
 return
 
-;Shft+F1 will open the popup window (see LaunchWB.ahk)
+;Shft+F1 will open the popup window (see Websites.ahk)
 ;Shft+F2 will close the popup window
 +F2:: ExitApp
