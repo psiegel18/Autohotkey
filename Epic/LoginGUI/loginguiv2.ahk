@@ -303,4 +303,6 @@ ToggleLoginManager(*) {
 
 ; Set icon and hotkey
 TraySetIcon(A_ScriptDir "\LoginIcon.ico")
-Hotkey "^!/", ToggleLoginManager  ; Ctrl+Alt+/
+
+; Assign hotkey as Ctrl+Alt+/
+Hotkey "^!/", ToggleLoginManager  
