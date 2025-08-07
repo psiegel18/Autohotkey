@@ -13,7 +13,7 @@ global searchBox
 global categories := [
     {name: "Websites", hotkeys: [
         {hotkey: "Ctrl+Alt+L", description: "Lunchy"},
-        {hotkey: "Shift+F1", description: "Open Hyperspace/Sandcastle"},
+        {hotkey: "Shift+F1", description: "Open Hyperspace Launcher"},
         {hotkey: "Shift+F3", description: "Reload Startup AHK File"}
     ]},
     {name: "Search", hotkeys: [
