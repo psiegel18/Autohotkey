@@ -3,6 +3,9 @@
 ;ctrl+alt+w
 ^!w:: Run "C:\Users\psiegel\OneDrive - Epic\Documents\AutoHotkey\Autohotkey\Epic\WikiShortcuts.ahk"
 
+;ctl+alt+M
+^!m:: Run "C:\MeetCute\meetcute"
+
 ;ctl+alt+.
 ^!.:: Run "C:\Users\psiegel\OneDrive - Epic\Documents\AutoHotkey\Autohotkey\Epic\MyAutoHotkeyFolder.ahk"
 
