@@ -45,6 +45,7 @@ ShowFoundationHelpTooltip() {
                    "Shift+P - FS Playground`n" .
                    "Shift+V - FS MasterView`n" .
                    "Shift+W - FS Environment Wiki`n" .
+                   "Shift+L - FS Environment List`n" .
                    "Shift+← - Back to Main Menu`n" .
                    "F1 - Show Help`n" .
                    "Shift+Esc - Close"
@@ -120,6 +121,9 @@ HideHelpTooltip() {
             ; GUI object exists but window is already destroyed
         }
         currentGUIState := "none"
+    } else {
+        ; When GUI is not active (currentGUIState = "none"), send the original keystroke to the system
+        Send("+{Left}")
     }
 }
 
@@ -188,6 +192,13 @@ HideHelpTooltip() {
     }
 }
 
++!l:: {
+    global currentGUIState
+    if (currentGUIState = "foundation") {
+        FSEnvironmentListButton()
+    }
+}
+
 ; Global hotkey for help (F1 key instead of Shift+?)
 F1:: {
     global currentGUIState
@@ -197,6 +208,9 @@ F1:: {
         ShowFoundationHelpTooltip()
     } else if (currentGUIState = "sandcastle") {
         ShowSandCastleHelpTooltip()
+    } else {
+        ; When GUI is not active, send F1 to the system for normal help functionality
+        Send("{F1}")
     }
 }
 
@@ -235,25 +249,28 @@ ShowFoundationMenu() {
     wikiBtn := selectionGui.Add("Button", "x40 y180 w240 h45", "📚 FS Environment &Wiki")
     wikiBtn.OnEvent("Click", FSWikiButton)
     
+    envlistBtn := selectionGui.Add("Button", "x40 y235 w240 h45", "📋 FS Environment &List")
+    envlistBtn.OnEvent("Click", FSEnvironmentListButton)
+    
     ; Add separator line
-    selectionGui.Add("Text", "x20 y240 w280 h2 Background0x34495E")
+    selectionGui.Add("Text", "x20 y295 w280 h2 Background0x34495E")
     
     ; Add back and close buttons
-    backBtn := selectionGui.Add("Button", "x40 y255 w110 h35", "← Back")
+    backBtn := selectionGui.Add("Button", "x40 y310 w110 h35", "← Back")
     backBtn.OnEvent("Click", BackToMainMenu)
     
-    closeBtn := selectionGui.Add("Button", "x170 y255 w110 h35", "✕ Close")
+    closeBtn := selectionGui.Add("Button", "x170 y310 w110 h35", "✕ Close")
     closeBtn.OnEvent("Click", CloseGUI)
     
     ; Add help icon with tooltip - positioned in bottom right corner, clear of other buttons
-    helpBtn := selectionGui.Add("Button", "x280 y290 w35 h30", "?")
+    helpBtn := selectionGui.Add("Button", "x280 y350 w35 h30", "?")
     helpBtn.SetFont("s12 Bold")
     helpBtn.OnEvent("Click", ShowFoundationHelpClick)
     
     ; Handle window close event
     selectionGui.OnEvent("Close", CloseGUIEvent)
     
-    selectionGui.Show("w320 h330")
+    selectionGui.Show("w320 h390")
 }
 
 ; Button event handlers
@@ -330,6 +347,19 @@ FSWikiButton(*) {
     OpenBrowser(url)
 }
 
+; FS Environment List button handler
+FSEnvironmentListButton(*) {
+    global selectionGui, currentGUIState, helpTooltipShowing
+    ToolTip()  ; Clear any active tooltips
+    helpTooltipShowing := false
+    if (selectionGui) {
+        selectionGui.Destroy()
+        currentGUIState := "none"
+    }
+    url := "https://emc2summary/GetSummaryReport.ashx/track/XSHADOW/EnvironmentList"
+    OpenBrowser(url)
+}
+
 ; SandCastle button handler
 SandCastleButton(*) {
     global selectionGui, helpTooltipShowing
@@ -341,10 +371,10 @@ SandCastleButton(*) {
         selectionGui.Destroy()
     }
     
-    ; Create styled input dialog
+    ; Create styled input dialog with consistent color scheme
     global selectionGui := Gui("+AlwaysOnTop -MaximizeBox -MinimizeBox", "🏰 SandCastle Number")
     global currentGUIState := "sandcastle"
-    selectionGui.BackColor := "0x3498DB"  ; Blue background
+    selectionGui.BackColor := "0x2C3E50"  ; Consistent dark blue-gray background
     selectionGui.SetFont("s11", "Segoe UI")
     
     selectionGui.Add("Text", "x20 y20 w260 h25 Center c0xFFFFFF", "Enter the SandCastle number:")

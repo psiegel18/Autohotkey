@@ -10,7 +10,7 @@
 ^!.:: Run "C:\Users\psiegel\OneDrive - Epic\Documents\AutoHotkey\Autohotkey\Epic\MyAutoHotkeyFolder.ahk"
 
 ;win+alt+ctrl+C
-#^!c:: Run "\\epic.com\files\Training\Internal\New Hire\Role-based Training\IS\IS Onboarding\Application Deep Dives\DRAFT Class PPTs\Willow IP\Advanced Application Topics #2 - Charging 2025.pptx"
+#^!c:: Run "\\epic.com\files\Training\Internal\New Hire\Role-based Training\IS\IS Onboarding\Application Deep Dives\DRAFT Class PPTs\Willow IP\2025 Advanced Application Topics #2 - Charging.pptx"
 
 ;win+alt+ctrl+I
 #^!I:: Run "\\epic.com\files\Training\Internal\New Hire\Role-based Training\IS\IS Onboarding\Application Deep Dives\DRAFT Class PPTs\Willow IP\Archive\Advanced Application Topics #2 - Charging - pre 2025.pptx"
@@ -24,14 +24,18 @@
 ;Ctrl+Del
 ^Del::Ins
 
-;FTP File Path Hotstrings
+;Hotstrings
 :o:.nprd::/epic/nonprdfiles/stage/Willow/psiegel/
 :o:.prd::/epic/prdfiles/stage/Willow/psiegel/
 :o:.nfs::/nfs/3day/
+:o:.qq::{U+00AF}\_({u+30c4})_/{U+00AF}
+:o:.td:: {
+TimeString := FormatTime(, "M/dd")
+Send(TimeString) 
+}
 
 ;ctrl+shft+alt+E - UMC Generic Epic User Password
 ^+!E::send "UMCepicepic{!}"
 
 ; alt+ctl+l - Lunchy
 !^l:: Run "https://epic1.sharepoint.com/sites/culinary/SitePages/Menu%20Dashboard.aspx"
-

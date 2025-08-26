@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Tree Pedigree Viewer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        #fileInput {
+            margin-right: 10px;
+        }
+
+        .info {
+            margin-left: auto;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        #treeContainer {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            height: 70vh;
+        }
+
+        .node {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .node rect {
+            stroke: #3498db;
+            stroke-width: 2;
+            rx: 5;
+            transition: all 0.3s ease;
+        }
+
+        .node:hover rect {
+            stroke: #2c3e50;
+            stroke-width: 3;
+        }
+
+        .node text {
+            font: 11px sans-serif;
+            text-anchor: middle;
+            pointer-events: none;
+            fill: #2c3e50;
+        }
+
+        .node .name {
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .node .dates {
+            font-size: 9px;
+            fill: #7f8c8d;
+        }
+
+        .link {
+            fill: none;
+            stroke: #3498db;
+            stroke-width: 2;
+        }
+
+        .expand-button {
+            fill: #3498db;
+            stroke: #2c3e50;
+            stroke-width: 1;
+            cursor: pointer;
+        }
+
+        .node.highlighted rect {
+            stroke: #e74c3c;
+            stroke-width: 4;
+            fill: #fdf2e9;
+            animation: highlight-pulse 2s ease-in-out;
+        }
+
+        .node.search-result rect {
+            stroke: #f39c12;
+            stroke-width: 3;
+        }
+
+        @keyframes highlight-pulse {
+            0% { stroke-width: 4; }
+            50% { stroke-width: 6; }
+            100% { stroke-width: 4; }
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+        }
+
+        .search-result-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .search-result-item:hover {
+            background: #ecf0f1;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            max-width: 200px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Family Tree Pedigree Viewer</h1>
+        <div class="controls">
+            <input type="file" id="fileInput" accept=".txt">
+            <button id="loadSample">Load Sample Data</button>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search for family member..." style="padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; width: 200px;">
+                <div class="search-results" id="searchResults"></div>
+            </div>
+            <button id="searchButton">Search</button>
+            <button id="clearSearch">Clear</button>
+            <button id="expandAll">Expand All</button>
+            <button id="collapseAll">Collapse All</button>
+            <button id="centerTree">Center & Fit</button>
+            <button id="exportSvg">Export SVG</button>
+            <div class="info" id="treeInfo">Load a family tree file to begin</div>
+        </div>
+    </div>
+    
+    <div id="treeContainer">
+        <svg id="treeSvg"></svg>
+    </div>
+    
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        class FamilyTreeViewer {
+            constructor() {
+                this.data = null;
+                this.root = null;
+                this.svg = null;
+                this.g = null;
+                this.width = 0;
+                this.height = 0;
+                this.highlightedNode = null;
+                this.searchResults = [];
+                
+                this.nodeWidth = 140;
+                this.nodeHeight = 60;
+                this.levelHeight = 100;
+                this.nodeSpacing = 20;
+                
+                this.generationColors = [
+                    '#ecf0f1', '#bdc3c7', '#85c1e9', '#7fb3d3', '#5dade2',
+                    '#3498db', '#2e86ab', '#2471a3', '#1b4f72', '#d5a6bd',
+                    '#c39bd3', '#bb8fce', '#a569bd', '#9b59b6', '#8e44ad'
+                ];
+                
+                this.initializeVisualization();
+                this.setupEventListeners();
+            }
+            
+            initializeVisualization() {
+                const container = document.getElementById('treeContainer');
+                this.width = container.offsetWidth || 1400;
+                this.height = container.offsetHeight || 600;
+                
+                this.svg = d3.select('#treeSvg')
+                    .attr('width', this.width)
+                    .attr('height', this.height);
+                
+                this.g = this.svg.append('g');
+                
+                // Add zoom and pan
+                const zoom = d3.zoom()
+                    .scaleExtent([0.1, 3])
+                    .on('zoom', (event) => {
+                        this.g.attr('transform', event.transform);
+                    });
+                
+                this.svg.call(zoom);
+                this.zoom = zoom;
+            }
+            
+            setupEventListeners() {
+                document.getElementById('fileInput').addEventListener('change', (e) => {
+                    this.loadFile(e.target.files[0]);
+                });
+                
+                document.getElementById('loadSample').addEventListener('click', () => {
+                    this.loadSampleData();
+                });
+                
+                // Search functionality
+                const searchInput = document.getElementById('searchInput');
+                const searchResults = document.getElementById('searchResults');
+                
+                searchInput.addEventListener('input', (e) => {
+                    this.handleSearchInput(e.target.value);
+                });
+                
+                searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        this.performSearch(e.target.value);
+                    }
+                    if (e.key === 'Escape') {
+                        this.clearSearch();
+                    }
+                });
+                
+                document.getElementById('searchButton').addEventListener('click', () => {
+                    this.performSearch(searchInput.value);
+                });
+                
+                document.getElementById('clearSearch').addEventListener('click', () => {
+                    this.clearSearch();
+                });
+                
+                // Hide search results when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.search-container')) {
+                        searchResults.style.display = 'none';
+                    }
+                });
+                
+                document.getElementById('expandAll').addEventListener('click', () => {
+                    this.expandAll();
+                });
+                
+                document.getElementById('collapseAll').addEventListener('click', () => {
+                    this.collapseAll();
+                });
+                
+                document.getElementById('centerTree').addEventListener('click', () => {
+                    this.centerAndFit();
+                });
+                
+                document.getElementById('exportSvg').addEventListener('click', () => {
+                    this.exportSvg();
+                });
+            }
+            
+            loadFile(file) {
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.parseData(e.target.result);
+                };
+                reader.readAsText(file);
+            }
+            
+            loadSampleData() {
+                const sampleData = `SONDREAL, MEGAN (8/4/2003, ---; 22yr
+ |->GARRETT, JEREMY (4/5/2004, ---; 21yr 4mo
+ | |->FERRIS, LINDSEY (7/5/2005, 5/21/2010; 4yr 10mo)
+ | | |->HANEL, JUSTIN (8/7/2006, 10/15/2010; 4yr 2mo)
+ | | | |->GRAY, TERESSA (11/5/2007, 10/3/2008; 10mo)
+ | | | |->SMITH, JOHN (1/1/2008, 12/31/2010; 3yr)
+ | |->MAURSETTER, ERIK (10/3/2005, 3/10/2010; 4yr 5mo)
+ | | |->PALOVCSIK, AMANDA (11/6/2006, 5/24/2013; 6yr 6mo)
+ | | | |->SCHROEDER, MARTY (7/2/2007, 7/24/2009; 2yr)
+ | | | |->JOHNSON, SARAH (8/1/2007, 3/15/2011; 4yr)
+ |->BODWIN, NATHAN (7/5/2004, 5/12/2022; 17yr 10mo)
+ | |->KURUP, ARUN (12/6/2004, 7/11/2008; 3yr 7mo)
+ | | |->DONNELLY, ELIZABETH (10/2/2006, 3/12/2010; 3yr 5mo)
+ | | |->BROWN, MICHAEL (11/15/2006, 8/20/2009; 3yr)
+ |->MARINO, JOHN (4/4/2005, 5/18/2007; 2yr 1mo)
+ | |->DAVIS, PATRICIA (5/1/2005, 12/1/2008; 3yr 7mo)`;
+                
+                this.parseData(sampleData);
+            }
+            
+            parseData(textData) {
+                const lines = textData.split('\n').filter(line => line.trim());
+                const members = [];
+                
+                for (const line of lines) {
+                    const member = this.parseLine(line);
+                    if (member) {
+                        members.push(member);
+                    }
+                }
+                
+                this.data = this.buildHierarchy(members);
+                this.updateTreeInfo(members.length);
+                this.calculatePositions();
+                this.renderTree();
+            }
+            
+            parseLine(line) {
+                // Count generation level
+                let generation = 1;
+                const arrowPos = line.indexOf('->');
+                if (arrowPos > 0) {
+                    const beforeArrow = line.substring(0, arrowPos);
+                    generation = 1 + (beforeArrow.match(/\|/g) || []).length;
+                }
+                
+                // Clean the line
+                const cleanLine = line.replace(/^[\|\s]*->?\s*/, '').trim();
+                if (!cleanLine) return null;
+                
+                // Parse name and dates
+                const match = cleanLine.match(/^([^(]+)\s*\(([^,]+),\s*([^;]+);\s*([^)]+)\)?/);
+                if (match) {
+                    return {
+                        name: match[1].trim(),
+                        startDate: match[2].trim(),
+                        endDate: match[3].trim(),
+                        duration: match[4].trim(),
+                        generation: generation,
+                        children: [],
+                        expanded: generation <= 3, // Auto-expand first 3 generations
+                        id: Math.random().toString(36).substr(2, 9)
+                    };
+                }
+                
+                return null;
+            }
+            
+            buildHierarchy(members) {
+                if (members.length === 0) return null;
+                
+                const stack = [];
+                
+                for (const member of members) {
+                    // Adjust stack based on generation level
+                    while (stack.length >= member.generation) {
+                        stack.pop();
+                    }
+                    
+                    // Add to parent's children
+                    if (stack.length > 0) {
+                        const parent = stack[stack.length - 1];
+                        if (!parent.children) parent.children = [];
+                        parent.children.push(member);
+                        member.parent = parent;
+                    }
+                    
+                    stack.push(member);
+                }
+                
+                return members[0];
+            }
+            
+            calculatePositions() {
+                if (!this.data) return;
+                
+                // First pass: calculate how much horizontal space each subtree needs
+                this.calculateSubtreeWidths(this.data);
+                
+                // Second pass: assign actual positions
+                this.assignPositions(this.data, 0, 0);
+            }
+            
+            calculateSubtreeWidths(node) {
+                if (!node) return 0;
+                
+                if (!node.children || node.children.length === 0 || !node.expanded) {
+                    node.subtreeWidth = this.nodeWidth + this.nodeSpacing;
+                    return node.subtreeWidth;
+                }
+                
+                let totalWidth = 0;
+                for (const child of node.children) {
+                    totalWidth += this.calculateSubtreeWidths(child);
+                }
+                
+                node.subtreeWidth = Math.max(totalWidth, this.nodeWidth + this.nodeSpacing);
+                return node.subtreeWidth;
+            }
+            
+            assignPositions(node, x, y) {
+                if (!node) return;
+                
+                node.x = x + node.subtreeWidth / 2 - this.nodeWidth / 2;
+                node.y = y;
+                
+                if (node.children && node.children.length > 0 && node.expanded) {
+                    let currentX = x;
+                    const childY = y + this.levelHeight;
+                    
+                    for (const child of node.children) {
+                        this.assignPositions(child, currentX, childY);
+                        currentX += child.subtreeWidth;
+                    }
+                }
+            }
+            
+            renderTree() {
+                if (!this.data) return;
+                
+                // Clear existing content
+                this.g.selectAll('*').remove();
+                
+                const visibleNodes = [];
+                const links = [];
+                
+                this.collectVisibleNodes(this.data, visibleNodes, links);
+                
+                // Draw links first
+                const linkElements = this.g.selectAll('.link')
+                    .data(links)
+                    .enter().append('line')
+                    .attr('class', 'link')
+                    .attr('x1', d => d.source.x + this.nodeWidth / 2)
+                    .attr('y1', d => d.source.y + this.nodeHeight)
+                    .attr('x2', d => d.target.x + this.nodeWidth / 2)
+                    .attr('y2', d => d.target.y);
+                
+                // Draw nodes
+                const nodeGroups = this.g.selectAll('.node')
+                    .data(visibleNodes)
+                    .enter().append('g')
+                    .attr('class', 'node')
+                    .attr('transform', d => `translate(${d.x}, ${d.y})`)
+                    .on('mouseover', (event, d) => this.showTooltip(event, d))
+                    .on('mouseout', () => this.hideTooltip());
+                
+                // Add rectangles
+                nodeGroups.append('rect')
+                    .attr('width', this.nodeWidth)
+                    .attr('height', this.nodeHeight)
+                    .style('fill', d => this.getGenerationColor(d.generation))
+                    .on('click', (event, d) => this.toggleNode(d));
+                
+                // Add names
+                nodeGroups.append('text')
+                    .attr('class', 'name')
+                    .attr('x', this.nodeWidth / 2)
+                    .attr('y', 20)
+                    .text(d => this.formatName(d.name));
+                
+                // Add dates
+                nodeGroups.append('text')
+                    .attr('class', 'dates')
+                    .attr('x', this.nodeWidth / 2)
+                    .attr('y', 35)
+                    .text(d => this.formatDates(d));
+                
+                // Add expand/collapse buttons
+                nodeGroups.filter(d => d.children && d.children.length > 0)
+                    .append('circle')
+                    .attr('class', 'expand-button')
+                    .attr('cx', this.nodeWidth - 15)
+                    .attr('cy', 15)
+                    .attr('r', 8)
+                    .on('click', (event, d) => {
+                        event.stopPropagation();
+                        this.toggleNode(d);
+                    });
+                
+                nodeGroups.filter(d => d.children && d.children.length > 0)
+                    .append('text')
+                    .attr('x', this.nodeWidth - 15)
+                    .attr('y', 20)
+                    .attr('text-anchor', 'middle')
+                    .style('font-size', '12px')
+                    .style('font-weight', 'bold')
+                    .style('fill', 'white')
+                    .style('pointer-events', 'none')
+                    .text(d => d.expanded ? '−' : '+');
+                
+                this.centerAndFit();
+            }
+            
+            collectVisibleNodes(node, nodes, links) {
+                if (!node) return;
+                
+                nodes.push(node);
+                
+                if (node.children && node.expanded) {
+                    for (const child of node.children) {
+                        links.push({ source: node, target: child });
+                        this.collectVisibleNodes(child, nodes, links);
+                    }
+                }
+            }
+            
+            toggleNode(d) {
+                d.expanded = !d.expanded;
+                this.calculatePositions();
+                this.renderTree();
+            }
+            
+            expandAll() {
+                this.setExpandedState(this.data, true);
+                this.calculatePositions();
+                this.renderTree();
+            }
+            
+            collapseAll() {
+                this.setExpandedState(this.data, false);
+                // Keep root expanded
+                if (this.data) this.data.expanded = true;
+                this.calculatePositions();
+                this.renderTree();
+            }
+            
+            setExpandedState(node, expanded) {
+                if (!node) return;
+                
+                node.expanded = expanded;
+                if (node.children) {
+                    for (const child of node.children) {
+                        this.setExpandedState(child, expanded);
+                    }
+                }
+            }
+            
+            centerAndFit() {
+                if (!this.data) return;
+                
+                const bounds = this.g.node().getBBox();
+                const fullWidth = this.width;
+                const fullHeight = this.height;
+                
+                const width = bounds.width;
+                const height = bounds.height;
+                const midX = bounds.x + width / 2;
+                const midY = bounds.y + height / 2;
+                
+                if (width == 0 || height == 0) return;
+                
+                const scale = Math.min(
+                    0.9 * fullWidth / width,
+                    0.9 * fullHeight / height
+                );
+                
+                const translate = [
+                    fullWidth / 2 - scale * midX,
+                    fullHeight / 2 - scale * midY
+                ];
+                
+                this.svg.transition()
+                    .duration(750)
+                    .call(this.zoom.transform, 
+                        d3.zoomIdentity
+                            .translate(translate[0], translate[1])
+                            .scale(scale)
+                    );
+            }
+            
+            formatName(name) {
+                if (name.length > 16) {
+                    return name.substring(0, 13) + '...';
+                }
+                return name;
+            }
+            
+            formatDates(data) {
+                const endDate = data.endDate === '---' ? 'Present' : data.endDate;
+                return `${data.startDate} - ${endDate}`;
+            }
+            
+            getGenerationColor(generation) {
+                const index = Math.min(generation - 1, this.generationColors.length - 1);
+                return this.generationColors[index];
+            }
+            
+            showTooltip(event, d) {
+                const tooltip = d3.select('#tooltip');
+                const content = `
+                    <strong>${d.name}</strong><br>
+                    Started: ${d.startDate}<br>
+                    ${d.endDate === '---' ? 'Still active' : 'Ended: ' + d.endDate}<br>
+                    Duration: ${d.duration}<br>
+                    Generation: ${d.generation}
+                `;
+                
+                tooltip
+                    .style('opacity', 1)
+                    .html(content)
+                    .style('left', (event.pageX + 10) + 'px')
+                    .style('top', (event.pageY - 10) + 'px');
+            }
+            
+            hideTooltip() {
+                d3.select('#tooltip').style('opacity', 0);
+            }
+            
+            updateTreeInfo(memberCount) {
+                document.getElementById('treeInfo').textContent = 
+                    `${memberCount} total members loaded`;
+            }
+            
+            exportSvg() {
+                const svgData = new XMLSerializer().serializeToString(this.svg.node());
+                const blob = new Blob([svgData], { type: 'image/svg+xml' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'family-tree.svg';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+            
+            // Search functionality
+            handleSearchInput(searchTerm) {
+                const searchResults = document.getElementById('searchResults');
+                
+                if (!searchTerm || searchTerm.length < 2) {
+                    searchResults.style.display = 'none';
+                    return;
+                }
+                
+                this.searchResults = this.searchNodes(searchTerm);
+                this.displaySearchSuggestions(this.searchResults.slice(0, 8)); // Show max 8 suggestions
+            }
+            
+            performSearch(searchTerm) {
+                if (!searchTerm) return;
+                
+                const results = this.searchNodes(searchTerm);
+                document.getElementById('searchResults').style.display = 'none';
+                
+                if (results.length === 0) {
+                    alert(`No family members found matching "${searchTerm}"`);
+                    return;
+                }
+                
+                // Take the first/best match
+                const foundNode = results[0];
+                this.highlightAndCenterNode(foundNode);
+                
+                // Update search info
+                document.getElementById('treeInfo').textContent = 
+                    `Found: ${foundNode.name} (Generation ${foundNode.generation})`;
+            }
+            
+            searchNodes(searchTerm) {
+                const results = [];
+                const term = searchTerm.toLowerCase();
+                
+                this.collectAllNodes(this.data, (node) => {
+                    const name = node.name.toLowerCase();
+                    if (name.includes(term)) {
+                        // Calculate relevance score (exact matches score higher)
+                        let score = 0;
+                        if (name === term) score = 100;
+                        else if (name.startsWith(term)) score = 50;
+                        else score = 10;
+                        
+                        results.push({ ...node, searchScore: score });
+                    }
+                });
+                
+                // Sort by relevance score
+                return results.sort((a, b) => b.searchScore - a.searchScore);
+            }
+            
+            collectAllNodes(node, callback) {
+                if (!node) return;
+                
+                callback(node);
+                
+                if (node.children) {
+                    for (const child of node.children) {
+                        this.collectAllNodes(child, callback);
+                    }
+                }
+            }
+            
+            displaySearchSuggestions(results) {
+                const searchResults = document.getElementById('searchResults');
+                searchResults.innerHTML = '';
+                
+                if (results.length === 0) {
+                    searchResults.style.display = 'none';
+                    return;
+                }
+                
+                results.forEach(node => {
+                    const item = document.createElement('div');
+                    item.className = 'search-result-item';
+                    item.innerHTML = `
+                        <strong>${node.name}</strong><br>
+                        <small>Generation ${node.generation} • ${node.startDate}-${node.endDate}</small>
+                    `;
+                    
+                    item.addEventListener('click', () => {
+                        document.getElementById('searchInput').value = node.name;
+                        searchResults.style.display = 'none';
+                        this.highlightAndCenterNode(node);
+                    });
+                    
+                    searchResults.appendChild(item);
+                });
+                
+                searchResults.style.display = 'block';
+            }
+            
+            highlightAndCenterNode(targetNode) {
+                // Clear previous highlight
+                this.clearHighlight();
+                
+                // Find the actual node in the tree (since search results are copies)
+                const actualNode = this.findNodeInTree(targetNode.id);
+                if (!actualNode) return;
+                
+                // Expand path to make node visible
+                this.expandPathToNode(actualNode);
+                
+                // Recalculate positions and render
+                this.calculatePositions();
+                this.renderTree();
+                
+                // Highlight the node
+                this.highlightedNode = actualNode;
+                
+                // Wait for render to complete, then center
+                setTimeout(() => {
+                    this.centerOnNode(actualNode);
+                    this.addHighlightClass(actualNode);
+                }, 100);
+            }
+            
+            findNodeInTree(nodeId) {
+                let found = null;
+                this.collectAllNodes(this.data, (node) => {
+                    if (node.id === nodeId) {
+                        found = node;
+                    }
+                });
+                return found;
+            }
+            
+            expandPathToNode(targetNode) {
+                // Expand all ancestors of the target node
+                let current = targetNode;
+                while (current) {
+                    current.expanded = true;
+                    current = current.parent;
+                }
+            }
+            
+            centerOnNode(node) {
+                const nodeElement = this.g.selectAll('.node')
+                    .filter(d => d.id === node.id)
+                    .node();
+                
+                if (!nodeElement) return;
+                
+                const nodeX = node.x + this.nodeWidth / 2;
+                const nodeY = node.y + this.nodeHeight / 2;
+                
+                const centerX = this.width / 2;
+                const centerY = this.height / 2;
+                
+                const currentTransform = d3.zoomTransform(this.svg.node());
+                const scale = Math.max(0.8, currentTransform.k); // Ensure reasonable zoom level
+                
+                const translate = [
+                    centerX - scale * nodeX,
+                    centerY - scale * nodeY
+                ];
+                
+                this.svg.transition()
+                    .duration(1000)
+                    .call(this.zoom.transform, 
+                        d3.zoomIdentity
+                            .translate(translate[0], translate[1])
+                            .scale(scale)
+                    );
+            }
+            
+            addHighlightClass(node) {
+                this.g.selectAll('.node')
+                    .filter(d => d.id === node.id)
+                    .classed('highlighted', true);
+            }
+            
+            clearHighlight() {
+                this.g.selectAll('.node').classed('highlighted', false);
+                this.highlightedNode = null;
+            }
+            
+            clearSearch() {
+                document.getElementById('searchInput').value = '';
+                document.getElementById('searchResults').style.display = 'none';
+                this.clearHighlight();
+                this.updateTreeInfo(this.getTotalNodeCount());
+            }
+            
+            getTotalNodeCount() {
+                let count = 0;
+                this.collectAllNodes(this.data, () => count++);
+                return count;
+            }
+        }
+        
+        // Initialize the viewer when the page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            new FamilyTreeViewer();
+        });
+    </script>
+</body>
+</html>

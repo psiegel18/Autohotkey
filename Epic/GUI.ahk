@@ -28,10 +28,14 @@ global categories := [
         {hotkey: "Ctrl+Alt+W", description: "Open WikiShortcut.ahk"},
         {hotkey: "Ctrl+Alt+Shift+W", description: "Close WikiShortcut.ahk"},
         {hotkey: "Win+Alt+Ctrl+C", description: "Charging Training.pptx"},       
-        {hotkey: "Win+Alt+Shift+I", description: "Old Charging Training.pptx"},
+        {hotkey: "Win+Alt+Shift+I", description: "Old Charging Training.pptx"}
+    ]},
+    {name: "Hotstrings", hotkeys: [
         {hotkey: ".prd", description: "prd file path"},
         {hotkey: ".nprd", description: "non-prd file path"},
-        {hotkey: ".nfs", description: "FS FTP file path"}
+        {hotkey: ".nfs", description: "FS FTP file path"},
+        {hotkey: ".qq", description: "¯\_(ツ)_/¯"},
+        {hotkey: ".td", description: "Today's date"}
     ]},
     {name: "Credentials", hotkeys: [
         {hotkey: "Ctrl+Alt+/", description: "Epic Login Gui"},
