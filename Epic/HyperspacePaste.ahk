@@ -28,7 +28,7 @@ global StopLoop := false
     }
 }
 
-; Ctrl + Shift + Alt + S - Send lines with Down arrow
+; Ctrl + Shift + Alt + S - Send lines with Down arrow (Fixed version)
 ^+!s:: {
     global StopLoop := false  ; Reset the kill switch
     ToolTip "Starting loop... Press Ctrl+Escape to stop", 100, 100
@@ -40,8 +40,12 @@ global StopLoop := false
             SetTimer () => ToolTip(), -2000
             break
         }
+        ; Use SendText to send the text (already raw in v2.0)
         SendText A_LoopField
-        Sleep 1000
+        Sleep 500  ; Longer pause to let any auto-complete settle
+        ; Send Escape first to clear any auto-complete suggestions
+        Send "{Escape}"
+        Sleep 100
         Send "{Down}"
         Sleep 1000
     }
