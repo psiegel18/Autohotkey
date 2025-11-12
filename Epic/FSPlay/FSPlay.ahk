@@ -47,13 +47,14 @@ AnimateLoading() {
     global loadingGui, loadingText
     static loadingStates := ["⏳ Loading", "⏳ Loading.", "⏳ Loading..", "⏳ Loading..."]
     static currentState := 1
-    
+
     try {
         if (IsObject(loadingGui) && WinExist(loadingGui.Hwnd) && IsObject(loadingText)) {
             loadingText.Value := loadingStates[currentState]
             currentState := Mod(currentState, 4) + 1
         }
     }
+    return
 }
 
 ; Hide loading indicator
