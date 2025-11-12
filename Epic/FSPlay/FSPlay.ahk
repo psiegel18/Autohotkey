@@ -898,6 +898,6 @@ InitializeConfig()
 
 ; Set icon
 try {
-    TraySetIcon("C:\Users\psiegel\OneDrive - Epic\Documents\AutoHotkey\Autohotkey\Epic\Epic.ico")
+    TraySetIcon(epicLauncherDir "\Epic.ico")
 } catch {
 }
