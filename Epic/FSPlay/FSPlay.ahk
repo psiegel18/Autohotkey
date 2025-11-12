@@ -47,13 +47,14 @@ AnimateLoading() {
     global loadingGui, loadingText
     static loadingStates := ["⏳ Loading", "⏳ Loading.", "⏳ Loading..", "⏳ Loading..."]
     static currentState := 1
-    
+
     try {
         if (IsObject(loadingGui) && WinExist(loadingGui.Hwnd) && IsObject(loadingText)) {
             loadingText.Value := loadingStates[currentState]
             currentState := Mod(currentState, 4) + 1
         }
     }
+    return
 }
 
 ; Hide loading indicator
@@ -304,7 +305,7 @@ ShowConfigGUI(menuId) {
     saveBtn := configGui.Add("Button", "x380 y320 w90 h35", "💾 Save")
     saveBtn.OnEvent("Click", (*) => SaveAndClose(configGui))
     
-    closeBtn := configGui.Add("Button", "x480 y320 w100 h35", "✕ Close")
+    closeBtn := configGui.Add("Button", "x480 y320 w100 h35", "✕ Cancel")
     closeBtn.OnEvent("Click", (*) => configGui.Destroy())
     
     ; Add separator
@@ -582,10 +583,11 @@ SaveAndClose(configGui) {
 ShowMainHelpTooltip() {
     global helpTooltipShowing
     helpTooltip := "Keyboard Shortcuts:`n" .
-                   "Shift+F1 - Open Launcher`n" .
-                   "Shift+← - Back/Close`n" .
+                   "Shift + F1 - Open Launcher`n" .
+                   "Shift + ← - Back/Close`n" .
                    "F1 - Show Help`n" .
-                   "Shift+Esc - Close"
+                   "Shift + Esc - Close`n" .
+                   "Shift + <underlined_Letter> - Toggle that Button"
     
     if (!helpTooltipShowing) {
         ToolTip(helpTooltip, 300, 200)
