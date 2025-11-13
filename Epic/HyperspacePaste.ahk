@@ -23,7 +23,7 @@ global StopLoop := false
             break
         }
         SendText A_LoopField
-        Sleep 200
+        Sleep 350
         Send "{Enter}"
     }
 }
@@ -45,7 +45,7 @@ global StopLoop := false
         Sleep 500  ; Longer pause to let any auto-complete settle
         ; Send Escape first to clear any auto-complete suggestions
         Send "{Escape}"
-        Sleep 100
+        Sleep 250
         Send "{Down}"
         Sleep 1000
     }
