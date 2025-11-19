@@ -63,10 +63,17 @@ global hotstringCategories := [
         {hotstring: ".nfs", description: "FS FTP file path"},
         {hotstring: ".ftp", description: "Show path selection GUI"}
     ]},
-    {name: "Emoticons", hotstrings: [
+    {name: "Typos", hotstrings: [
+        {hotstring: "teh", description: "the"},
+        {hotstring: "recieve", description: "receive"},
+        {hotstring: "seperate", description: "separate"},
+        {hotstring: "definately", description: "definitely"},
+        {hotstring: "defualt", description: "default"}
+    ]},
+    {name: "Emoticons - Basic", hotstrings: [
         {hotstring: ".shrug", description: "¯\_(ツ)_/¯"},
         {hotstring: ".tbl", description: "(╯°□°)╯︵ ┻━┻"},
-        {hotstring: ".puttableback", description: "┬─┬ノ( º _ ºノ)"},
+        {hotstring: ".puttbl", description: "┬─┬ノ( º _ ºノ)"},
         {hotstring: ".lenny", description: "( ͡° ͜ʖ ͡°)"},
         {hotstring: ".disapprove", description: "ಠ_ಠ"},
         {hotstring: ".happy", description: "ヽ(^▽^)/"},
@@ -79,6 +86,82 @@ global hotstringCategories := [
         {hotstring: ".thinking", description: "(¬‿¬)"},
         {hotstring: ".love", description: "(♥‿♥)"},
         {hotstring: ".dealwithit", description: "(⌐■_■)"}
+    ]},
+    {name: "Emoticons - Reactions", hotstrings: [
+        {hotstring: ".cry", description: "(╥﹏╥)"},
+        {hotstring: ".tears", description: "(T_T)"},
+        {hotstring: ".sad", description: "(◕︵◕)"},
+        {hotstring: ".sob", description: "。゜゜(´O``°)゜"},
+        {hotstring: ".depressed", description: "(︶︹︶)"},
+        {hotstring: ".angry", description: "(ಠ益ಠ)"},
+        {hotstring: ".rage", description: "(╬ ಠ益ಠ)"},
+        {hotstring: ".mad", description: "ಠ_ಠ凸"},
+        {hotstring: ".annoyed", description: "(¬_¬)"},
+        {hotstring: ".facepalm", description: "(－‸ლ)"},
+        {hotstring: ".shock", description: "(⊙_⊙)"},
+        {hotstring: ".surprised", description: "Σ(ﾟДﾟ)"},
+        {hotstring: ".ohno", description: "(⊙＿⊙')"},
+        {hotstring: ".gasp", description: "(๑•̀ㅂ•́)و✧"},
+        {hotstring: ".confused", description: "(・_・?)"},
+        {hotstring: ".worry", description: "(･_･;)"},
+        {hotstring: ".nervous", description: "(◕﹏◕)"},
+        {hotstring: ".awkward", description: "(ᵕ—ᴗ—)"}
+    ]},
+    {name: "Emoticons - Happy", hotstrings: [
+        {hotstring: ".yay", description: "\(★ω★)/"},
+        {hotstring: ".celebrate", description: "٩(◕‿◕｡)۶"},
+        {hotstring: ".party", description: "[̲̅$̲̅(̲̅ ͡° ͜ʖ ͡°)̲̅$̲̅]"},
+        {hotstring: ".dance", description: "♪┏(・o･)┛♪┗ ( ･o･) ┓♪"},
+        {hotstring: ".headbang", description: "(╯°□°）╯♪"},
+        {hotstring: ".cool", description: "(•_•) ( •_•)>⌐■-■ (⌐■_■)"},
+        {hotstring: ".smug", description: "(¬‿¬)"},
+        {hotstring: ".wink", description: "(^_~)"},
+        {hotstring: ".pleased", description: "(◕‿◕)"},
+        {hotstring: ".wave", description: "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧"},
+        {hotstring: ".hello", description: "(•‿•)"},
+        {hotstring: ".bye", description: "ヾ(＾-＾)ノ"},
+        {hotstring: ".salute", description: "(￣^￣)ゞ"}
+    ]},
+    {name: "Emoticons - Love", hotstrings: [
+        {hotstring: ".hearts", description: "(♥ω♥*)"},
+        {hotstring: ".blush", description: "(⁄ ⁄>⁄ ▽ ⁄<⁄ ⁄)"},
+        {hotstring: ".kiss", description: "(づ￣ ³￣)づ"},
+        {hotstring: ".hug", description: "⊂(◉‿◉)つ"},
+        {hotstring: ".aww", description: "(｡♥‿♥｡)"}
+    ]},
+    {name: "Emoticons - Actions", hotstrings: [
+        {hotstring: ".fight", description: "(ง'̀-'́)ง"},
+        {hotstring: ".punch", description: "O=('-'Q)"},
+        {hotstring: ".sword", description: "(ﾉಠ_ಠ)ﾉ ┫：・'.::・┻┻：・'.::・"},
+        {hotstring: ".gun", description: "̿̿ ̿̿ ̿̿ ̿'̿'̵͇̿̿\\з= ( ▀ ͜͞ʖ▀) =ε/̵͇̿̿/'̿'̿ ̿ ̿̿ ̿̿ ̿̿"},
+        {hotstring: ".flip", description: "(-_- )ﾉ⌒┫ ┻ ┣ ┳☆(x_x)"},
+        {hotstring: ".magic", description: "*｡ﾟ(´д``｡｡)ﾟ｡*"},
+        {hotstring: ".shrug2", description: "¯\(°_o)/¯"},
+        {hotstring: ".dunno", description: "¯\_(ツ)_/¯"}
+    ]},
+    {name: "Emoticons - Animals", hotstrings: [
+        {hotstring: ".cat", description: "(=^･ω･^=)"},
+        {hotstring: ".dog", description: "U ´ᴥ`` U"},
+        {hotstring: ".bunny", description: "(・×・)"},
+        {hotstring: ".bird", description: "( ˘▽˘)っ♨"},
+        {hotstring: ".pig", description: "( ´(00)``｀)"},
+        {hotstring: ".owl", description: "{◕ ◡ ◕}"}
+    ]},
+    {name: "Emoticons - Misc", hotstrings: [
+        {hotstring: ".sleep", description: "(-_-)zzz"},
+        {hotstring: ".tired", description: "(=_=)"},
+        {hotstring: ".yawn", description: "(´～``｀)"},
+        {hotstring: ".nom", description: "(っ˘ڡ˘ς)"},
+        {hotstring: ".tea", description: "( ͡° ͜ʖ ͡°)_旦~~"},
+        {hotstring: ".coffee", description: "c[_]"},
+        {hotstring: ".evil", description: "(•̀ᴗ•́)و ̑̑"},
+        {hotstring: ".mischief", description: "(¬‿¬ )"},
+        {hotstring: ".plotting", description: "(⊙ω⊙)"},
+        {hotstring: ".derp", description: "(づ｡◕‿‿◕｡)づ"},
+        {hotstring: ".nyan", description: "~=[,,_,,]:3"},
+        {hotstring: ".kirby", description: "('▽')/"},
+        {hotstring: ".doge", description: "▼・ᴥ・▼"},
+        {hotstring: ".penguin", description: "<(°^°<)"}
     ]},
     {name: "Symbols", hotstrings: [
         {hotstring: ".check", description: "✓ (checkmark)"},
