@@ -81,5 +81,18 @@ PerformGuruSearch() {
 }
 
 UrlEncode(str) {
-    return StrReplace(StrReplace(str, "&", "%26"), " ", "+")
+    ; Properly encode all special characters for URLs
+    encoded := ""
+    Loop Parse, str {
+        char := A_LoopField
+        ; Keep alphanumeric and safe characters unchanged
+        if RegExMatch(char, "[A-Za-z0-9\-_.~]")
+            encoded .= char
+        else if (char = " ")
+            encoded .= "+"
+        else
+            ; Convert to percent-encoded format
+            encoded .= Format("%{:02X}", Ord(char))
+    }
+    return encoded
 }

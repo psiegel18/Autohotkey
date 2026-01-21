@@ -72,6 +72,4 @@
         ; Close the GUI after navigating
         MyGui.Destroy()
     }
-    
-    return
 }

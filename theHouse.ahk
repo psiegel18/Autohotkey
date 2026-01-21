@@ -11,7 +11,7 @@
         WinWaitActive "ahk_exe chrome.exe"
         vsCode()
     } else {
-        if FileExist("C:\Program files (x86)\Microsoft\Edge\Application\msedge.exe") {
+        if FileExist("C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe") {
             Run "msedge.exe"
             WinWait "ahk_exe msedge.exe"
             WinActivate "ahk_exe msedge.exe"

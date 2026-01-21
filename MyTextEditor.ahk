@@ -67,7 +67,13 @@ MenuFileExit(*)  ; User chose "Exit" from the File menu.
 
 MenuHelpAbout(*)
 {
-    About := Gui("+owner" MyGui.Hwnd)  ; Make the main window the owner of the "about box".
+    try {
+        ownerHwnd := MyGui.Hwnd
+    } catch {
+        MsgBox("Main window not available.")
+        return
+    }
+    About := Gui("+owner" ownerHwnd)  ; Make the main window the owner of the "about box".
     MyGui.Opt("+Disabled")  ; Disable main window.
     About.Add("Text", , "Text for about box.")
     About.Add("Button", "Default", "OK").OnEvent("Click", About_Close)
