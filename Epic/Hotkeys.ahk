@@ -9,6 +9,9 @@
 ;ctl+alt+.
 ^!.:: Run "C:\Users\psiegel\OneDrive - Epic\Documents\AutoHotkey\Autohotkey\Epic\MyAutoHotkeyFolder.ahk"
 
+;win+alt+ctrl+A
+#^!a:: Run "F:\EpicRX\Inventory Management\Implementation\Inpatient 340b Accumulator\Epic Mixed-Use&Retail 340b Accumulator.pptx"
+
 ;win+alt+ctrl+C
 #^!c:: Run "\\epic.com\files\Training\Internal\New Hire\Role-based Training\IS\IS Onboarding\Application Deep Dives\DRAFT Class PPTs\Willow IP\2025 Advanced Application Topics #2 - Charging.pptx"
 
@@ -16,7 +19,7 @@
 #^!I:: Run "\\epic.com\files\Training\Internal\New Hire\Role-based Training\IS\IS Onboarding\Application Deep Dives\DRAFT Class PPTs\Willow IP\Archive\Advanced Application Topics #2 - Charging - pre 2025.pptx"
 
 ;alt+ctrl+u
-!^u::send "psiegel@epic.com"
+!^u:: send "psiegel@epic.com"
 
 ;Ctrl+End
 ^End::Home
@@ -25,7 +28,7 @@
 ^Del::Ins
 
 ;ctrl+shft+alt+E - UMC Generic Epic User Password
-^+!E::send "UMCepicepic{!}"
+^+!E:: send "UMCepicepic{!}"
 
 ; alt+ctl+l - Lunchy
 !^l:: Run "https://epic1.sharepoint.com/sites/culinary/SitePages/Menu%20Dashboard.aspx"
@@ -36,6 +39,7 @@
 :o:.nprd::/epic/nonprdfiles/stage/Willow/psiegel/
 :o:.prd::/epic/prdfiles/stage/Willow/psiegel/
 :o:.nfs::/nfs/3day/
+:o:.340B::https://psiegel.gitpages.epic.com/340b-tracker
 
 ; ========================================
 ; HOTSTRINGS - TYPO CORRECTIONS
@@ -243,21 +247,21 @@ ShowPathGUI() {
     ; Create the GUI
     pathGUI := Gui("+AlwaysOnTop", "Select Environment")
     pathGUI.SetFont("s12")
-    
+
     ; Add instruction text
     pathGUI.Add("Text", "w300 Center", "Select Environment:")
-    
+
     ; Add buttons with keyboard shortcuts (3 buttons in a row)
     pathGUI.Add("Button", "w95 h40 Default", "&Production (P)").OnEvent("Click", (*) => SelectPath("prd", pathGUI))
     pathGUI.Add("Button", "w95 h40 x+5", "&NonProd (N)").OnEvent("Click", (*) => SelectPath("nonprd", pathGUI))
     pathGUI.Add("Button", "w95 h40 x+5", "&Internal (I)").OnEvent("Click", (*) => SelectPath("nfs", pathGUI))
-    
+
     ; Add cancel button
     pathGUI.Add("Button", "w300 h30 xm", "Cancel (Esc)").OnEvent("Click", (*) => pathGUI.Destroy())
-    
+
     ; Handle keyboard shortcuts
     pathGUI.OnEvent("Escape", (*) => pathGUI.Destroy())
-    
+
     ; Show the GUI centered
     pathGUI.Show()
 }
@@ -265,7 +269,7 @@ ShowPathGUI() {
 SelectPath(env, guiObj) {
     ; Close the GUI first
     guiObj.Destroy()
-    
+
     ; Send the appropriate path
     if env = "prd"
         Send("/epic/prdfiles/stage/Willow/psiegel/")

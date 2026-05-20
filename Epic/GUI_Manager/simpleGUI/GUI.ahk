@@ -70,6 +70,7 @@ global hotkeyCategories := [
         {hotkey: "Ctrl+Del", description: "Insert Key"},
         {hotkey: "Ctrl+Alt+W", description: "Open WikiShortcut.ahk"},
         {hotkey: "Ctrl+Alt+Shift+W", description: "Close WikiShortcut.ahk"},
+        {hotkey: "Win+Alt+Ctrl+A", description: "340B Fit Call pptx"},   
         {hotkey: "Win+Alt+Ctrl+C", description: "Charging Training.pptx"},       
         {hotkey: "Win+Alt+Shift+I", description: "Old Charging Training.pptx"}
     ]},
@@ -87,8 +88,8 @@ global hotkeyCategories := [
     {name: "Functions", hotkeys: [
         {hotkey: "Ctrl+Alt+Shift+M", description: "Convert .xml to .xlsx"},
         {hotkey: "Ctrl+Alt+.", description: "Open AHKFolder"},
-        {hotkey: "Ctrl+Alt+S", description: "Paste List w Enter"},
-        {hotkey: "Ctrl+Alt+Shift+S", description: "Paste List w Down"},
+        {hotkey: "Ctrl+Alt+v", description: "Paste List w Enter"},
+        {hotkey: "Ctrl+Alt+Shift+v", description: "Paste List w Down"},
         {hotkey: "Ctrl+Alt+Esc", description: "Close AHK Help GUI"}
     ]}
 ]

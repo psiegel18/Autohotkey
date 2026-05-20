@@ -642,14 +642,9 @@ HideHelpTooltip() {
     }
 }
 
-F1:: {
-    global currentGUIState
-    if (currentGUIState != "none") {
-        ShowMainHelpTooltip()
-    } else {
-        Send("{F1}")
-    }
-}
+#HotIf currentGUIState != "none"
+F1:: ShowMainHelpTooltip()
+#HotIf
 
 ; Handle button action
 HandleButtonAction(btn) {

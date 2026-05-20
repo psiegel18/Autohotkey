@@ -11,7 +11,7 @@ global StopLoop := false
 }
 
 ; Ctrl + Alt + S - Send lines with Enter
-^!s:: {
+^!v:: {
     global StopLoop := false  ; Reset the kill switch
     ToolTip "Starting loop... Press Ctrl+Escape to stop", 100, 100
     SetTimer () => ToolTip(), -1000  ; Hide tooltip after 1 second
@@ -29,7 +29,7 @@ global StopLoop := false
 }
 
 ; Ctrl + Shift + Alt + S - Send lines with Down arrow (Fixed version)
-^+!s:: {
+^+!v:: {
     global StopLoop := false  ; Reset the kill switch
     ToolTip "Starting loop... Press Ctrl+Escape to stop", 100, 100
     SetTimer () => ToolTip(), -1000  ; Hide tooltip after 1 second
